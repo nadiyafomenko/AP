@@ -1,7 +1,10 @@
 ﻿#include <stdio.h>
+#include <string.h>
+
+#define LEN 10
 
 //шаблон структури
-typedef struct city {
+typedef struct {
 	char name[50];
 	int year;
 	char country[50];
@@ -9,67 +12,52 @@ typedef struct city {
 } city;
 
 city c;
+
 //прототипи функцій
-void Percent(int p, int c); //розрахування відсотку
+int Percent(city cities[LEN], int k); //розрахування відсотку
 city setCity(); //функція заповнення структури
-void printCity(city* c); //функція роздруку таблиці
-void sortYear(city cities[10], int k); // функція сортування
+void printCity(city* c, int k); //функція роздруку таблиці
+void sortYear(city cities[LEN], int k); // функція сортування
 
-
-//ЗАВДАННЯ:
-//оголошення через typedef, визначення відсотків у окремій функції, передача у функцію структури через вказівник
 
 
 int main() {
 
 	int q = 0;
-	int i = 0;
 	int counter = 0;
-	int percent = 0;
-	city cities[10];
+	city cities[LEN];
 	puts("Press enter no start:");
-
 	do {
-		city city1 = setCity();
-		cities[i] = city1;
+		cities[counter] = setCity();
 		counter++;
-		i++;
-		if (city1.year < 1200) {
-			percent++;
-		}
 		puts("\nIf you want to add one more city press 1 (else 0):\n");
 		scanf_s("%d", &q);
 	} while (q == 1);
-	//виведення початкової таблиці
-	puts("\n\n\tTable:\n");
-	for (int i = 0; i < counter; i++) {
-		printCity(cities);
-	}
-	puts("\n");
 
-	//виведення відсортованої по роках таблиці (по спаданню)
-	sortYear(cities, counter);
-	printf("\n\n\tSorted table:\n");
-	for (int i = 0; i < counter; i++) {
-		printCity(cities);
-	}
+	printCity(cities, counter);	//Original table
 
-	Percent(percent, counter);
+	sortYear(cities, counter);	//Sorting
+	printCity(cities, counter); //Sorted table
 
+	printf("There are %d%% of cities built over 1200 years ago",Percent(cities, counter)); //percents	
 }
-
 
 
 //ФУНКЦІЇ
-void Percent(int p, int c) {
-	printf("percentage of cities under 1200 - %d%%", (100 * p) / c);
+int Percent(city cities[LEN], int k) {
+	int percent = 0;
+	int i = 0;
+	for (i; i < k; i++) {
+		if ((2020 - cities[i].year) > 1200) {
+			percent++;
+		}
+	}
+	percent = (percent * 100)/k;
+	return percent;
 }
 city setCity() {
-
-
 	getchar();
 	puts("Enter city: ");
-
 	gets_s(c.name, 49);
 
 	puts("Enter county: ");
@@ -84,14 +72,18 @@ city setCity() {
 	return c;
 }
 
-void printCity(city* c) {
-	printf("%s		%s		%d		%d\n", c->country, c->name, c->year, c->population);
+void printCity(city cities[LEN], int k) {
+	int i = 0;
+	puts("\n\n\tTable:\n");
+	for (i; i < k; i++) {
+		printf("%s\t%s\t%d\t%d\n", cities[i].country, cities[i].name, cities[i].year, cities[i].population);
+	}
+	puts("\n");
 }
 
 
-void sortYear(city cities[10], int k)
+void sortYear(city cities[LEN], int k)
 {
-
 	city c;
 	for (int j = k; j > 0; j--)
 	{
