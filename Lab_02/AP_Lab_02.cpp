@@ -1,55 +1,58 @@
 ﻿#include <stdio.h>
 #include <ctype.h>
-#include <stdlib.h>
-#define LEN 100
-#define KST 5
+
+#define LEN 200
+#define KST 3
 
 char* FindNumber(char* s);
-long GetNumber(char* pn, char** next);
+long GetNumber(char** next);
+void Print();
 
-int main() {
-	char strings[LEN][LEN];
-	int i = 0;
-	int p = 0;
-	int k = 0;
-	while (k < KST) {
-		printf("Enter a string:\n");
-		gets_s(strings[i], LEN);
-		i++;
-		k++;
-	}
+int numbs[LEN][LEN] = { 0 };
+
+int main()
+{
+	char string[LEN];
 	int j = 0;
-	printf("\n\n%d",k);
-
-	while (k != 0) {
-
-		char* pnum = strings[j];
-
+	while (j < KST) {
+		int i = 1;
+		printf("Enter a string: ");
+		gets_s(string, LEN);
+		char* pnum = string;
 		while ((pnum = FindNumber(pnum)) != NULL) {
-			printf("%d\t", GetNumber(pnum, &pnum));
+			numbs[j][i] = GetNumber(&pnum);
 			if (*pnum == '\0') break;
+			i++;	
 		}
+		numbs[j][0] = i;
 		j++;
-		k--;
+	}
+	Print();
+	getchar();
+}
+
+
+void Print() {
+	for (int r = 0; r < KST; r++) {
+		for (int i = 1; i <= numbs[r][0]; i++) {
+			printf("%d\t", numbs[r][i]);
+		}
 		puts("\n");
 	}
-
-	system("pause");
-	return 0;
-
+	
 }
 
-
-char* FindNumber(char* s) {
-	while (!isdigit(*s) && *s != '0')
-		s++;
-	if (*s == '\0') return NULL;
-	else return s;
+char* FindNumber(char* s)
+{
+	while (!(*s <= '9') && *s > '0') s++;
+	return s;
 }
 
-long GetNumber(char* pn, char** next) {
+long GetNumber(char** next)
+{
+	char* pn = *next;
 	long numb = 0;
-	while (isdigit(*pn)) {
+	while (*pn >= '0' && *pn <= '9') {
 		numb = numb * 10 + (*pn - 48);
 		pn++;
 	}
