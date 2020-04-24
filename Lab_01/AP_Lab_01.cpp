@@ -46,15 +46,15 @@ int main() {
 //ФУНКЦІЇ
 int Percent(city cities[LEN], int k) {
 	int percent = 0;
-	int i = 0;
-	for (i; i < k; i++) {
+	
+	for (int i = 0; i < k; i++) {
 		if ((2020 - cities[i].year) > 1200) {
 			percent++;
 		}
 	}
-	percent = (percent * 100)/k;
-	return percent;
+	return (percent * 100) / (float)k;
 }
+
 city setCity() {
 	getchar();
 	puts("Enter city: ");
@@ -73,9 +73,9 @@ city setCity() {
 }
 
 void printCity(city cities[LEN], int k) {
-	int i = 0;
+	
 	puts("\n\n\tTable:\n");
-	for (i; i < k; i++) {
+	for (int i = 0; i < k; i++) {
 		printf("%s\t%s\t%d\t%d\n", cities[i].country, cities[i].name, cities[i].year, cities[i].population);
 	}
 	puts("\n");
