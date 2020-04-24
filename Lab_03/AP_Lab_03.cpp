@@ -58,8 +58,7 @@ int Percent() {
 			percent++;
 		}
 	}
-	percent = (percent * 100) / counter;
-	return percent;
+	return (percent * 100) / (float)counter;
 }
 city setCity() {
 	getchar();
