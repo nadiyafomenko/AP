@@ -6,6 +6,7 @@
 #define MAX 10
 #define LEN 20
 
+void ToBinary(FILE* file, long n);
 int validation(long* mas, int numb, long* validMas);
 void TextFileWrite(FILE* file, long* validMas, int count);
 void BinaryFileWrite(FILE* file, long* mas);
@@ -36,8 +37,9 @@ void BinaryFileWrite(FILE* file, long* mas) {
     srand(time(0));
     for (int i = 0; i < MAX; i++) {
         mas[i] = (rand() << 32) + rand();
-        fprintf(file, " %ld  ", mas[i]);
+        ToBinary(file,mas[i]);
         printf("%d\n", mas[i]);
+       /* printf("%d\n", mas[i]);*/
     }
 }
 
@@ -66,3 +68,17 @@ int validation(long* mas, int numb, long* validMas) {
         return count;
 }
 
+void ToBinary(FILE* file,long n) {
+    char result[32];
+    for (int c = 16; c >= 0; c--) {
+       int k = n >> c;
+       if (k & 1) {
+           result[c] = *("1");
+           fprintf(file,"%c",result[c]);
+       }
+       else {
+           result[c] = *("0");
+           fprintf(file,"%c",result[c]);
+       }
+    }
+}
