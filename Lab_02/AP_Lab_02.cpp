@@ -2,60 +2,47 @@
 #include <ctype.h>
 
 #define LEN 200
-#define KST 3
+#define KST 5
 
-char* FindNumber(char* s);
-long GetNumber(char** next);
-void Print();
+void Print(int(*numbs)[LEN]);
+void getNumbs(char* p, int* row);
 
-int numbs[LEN][LEN] = { 0 };
 
 int main()
 {
+	int numbs[LEN][LEN] = { 0 };
 	char string[LEN];
-	int j = 0;
-	while (j < KST) {
+	for (int j = 0; j < KST; j++) {
 		int i = 1;
 		printf("Enter a string: ");
 		gets_s(string, LEN);
-		char* pnum = string;
-		while ((pnum = FindNumber(pnum)) != NULL) {
-			numbs[j][i] = GetNumber(&pnum);
-			if (*pnum == '\0') break;
-			i++;	
-		}
-		numbs[j][0] = i;
-		j++;
+		getNumbs(string, numbs[j]);
 	}
-	Print();
-	getchar();
+	Print(numbs);
 }
 
 
-void Print() {
+void Print(int (*numbs)[LEN]) {
 	for (int r = 0; r < KST; r++) {
-		for (int i = 1; i <= numbs[r][0]; i++) {
-			printf("%d\t", numbs[r][i]);
+		int* ptr = (int*)numbs[r];
+		for (int i = 1; i <= (*ptr); i++) {
+			printf("%d\t", *(ptr + i));
 		}
 		puts("\n");
 	}
 	
 }
 
-char* FindNumber(char* s)
-{
-	while (!(*s <= '9') && *s > '0') s++;
-	return s;
-}
-
-long GetNumber(char** next)
-{
-	char* pn = *next;
-	long numb = 0;
-	while (*pn >= '0' && *pn <= '9') {
-		numb = numb * 10 + (*pn - 48);
-		pn++;
+void getNumbs(char* string, int* row) {
+	int* p_row = row+1;
+	long num;
+	while (*string) {
+		while (*string && (*string < '0' || *string > '9'))
+			string++;
+		num = 0;
+		while (*string && *string > '0' && *string <= '9')
+			num = num * 10 + (*string++ - '0');
+		*p_row++ = num;
+		++* (row);
 	}
-	*next = pn;
-	return numb;
 }
