@@ -3,38 +3,34 @@
 
 #define LEN 100
 
-void findwords(char* s);
-void printWord(char* s, int k);
+int findwords(char* s, char* mas[LEN]);
+void Print(char* mas[LEN], int k);
 
-int count = 0;
-int k = 0;
 
 int main() {
+	char* mas[LEN];
 	char s[LEN];
 	gets_s(s, LEN);
-	findwords(s);
-	printf("%d", count);
+	int count = findwords(s,mas);
+	Print(mas, count);
 }
 
-void findwords(char* s) {
-	if (*s != ' ' && *s != '\0') k++;
-	if (*s == '\0') {
-		if (*(s - 1) == *(s - k)) printWord(s - k, k);
+int findwords(char* s, char* mas[LEN]) {
+	if (!*(s+1)) return 0;
+	char* p = s;
+	while (*s && *s != ' ') s++;
+	*s = 0;
+
+	int count = findwords(s + 1,mas);
+	if (*p == *(s - 1)) {
+		mas[count] = p;
 		count++;
-		return;
-		k = 0;
 	}
-	if (*s == ' ') {
-		if (*(s - 1) == *(s - k)) printWord(s - k, k);
-		count++;
-		k = 0;
-	}
-	findwords(s + 1);
+	return count;
 }
 
-void printWord(char* s, int k) {
+void Print(char* mas[LEN], int k) {
 	for (int i = 0; i < k; i++) {
-		printf("%c", *(s + i));
+		puts(mas[i]);
 	}
-	puts("\t");
 }
