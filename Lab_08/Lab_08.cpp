@@ -1,23 +1,22 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
-#include <malloc.h>
-
-#define MAX 5
-
 
 double** CreateMatrix();
-void DeleteMatrix(double** matrix);
+void DeleteMatrix(double** matrix, int k);
 void Print(double* matrix[]);
 double** Transposition(double** matrix);
 double** ReadMatrixFromFile();
+void DeleteRow(double** matrix);
+void bubbleSort(double** mas);
 
 int size = 0;
+#define MAX 5
 
 int main()
 {
-    int option=0;
-    double** matrix;
+    int option = 0;
+    double** matrix = { 0 };
     puts("Choose the option:\n1. Enter matrix from keyboard\n2. Read from file\n");
     scanf_s("%d", &option);
     switch(option) {
@@ -35,8 +34,9 @@ int main()
     puts("Transported matrix:\n");
     double** transported = Transposition(matrix);
     Print(transported);
-    DeleteMatrix(matrix);
-    DeleteMatrix(transported);
+    DeleteRow(transported);
+    Print(transported);
+    DeleteMatrix(matrix,size);
 }
 
 double** CreateMatrix()
@@ -45,10 +45,14 @@ double** CreateMatrix()
     puts("Enter matrix size:\t");
     scanf_s("%d", &size);
 
-    m = (double**)malloc(size * sizeof(double*));
-
+    m = (double**)calloc(size, sizeof(double*));
+    if (!m) return NULL;
     for (int i = 0; i < size; i++) {
-        m[i] = (double*)malloc(size * sizeof(double));
+        m[i] = (double*)calloc(size + 1, sizeof(double));
+        if (!*(m + i)) {
+            DeleteMatrix(m,i);
+            return NULL;
+        }
             for (int j = 0; j < size; j++)
             {
                 printf("a[%d][%d] = ", i, j);
@@ -57,7 +61,6 @@ double** CreateMatrix()
         }
     return m;
 }
-
 
 double** ReadMatrixFromFile()
 {
@@ -81,26 +84,37 @@ double** ReadMatrixFromFile()
     }
     return m;
 }
-//
-//double** mtrx() {
-//    FILE* arr;
-//    double** k = { 0 };
-//    arr = fopen("D:\\matrix.txt", "r");
-//    int i, j;
-//
-//
-//    for (i = 0; i < 3; i++)
-//    {
-//        for (j = 0; j < 3; j++)
-//        {
-//            double num = fscanf(arr, "%lf%*[^\n]", &k[i][j]);
-//            printf("%f\n", num);
-//        }
-//    }
-//    return k;
-//}
-//
-void DeleteMatrix(double** matrix) {
+
+void DeleteRow(double** matrix) {
+    double** sum = (double**)calloc(size,sizeof(double));
+    for (int j = 0; j < size; j++) {
+        sum[j] = (double*)calloc(size, sizeof(double));
+        for (int i = 0; i < size; i++) {
+            sum[j][1] = j;
+            sum[j][0] += matrix[j][i];  
+        }
+    }
+    bubbleSort(sum);
+    const int k = sum[0][1];
+    free(matrix[k]);
+}
+
+void bubbleSort(double** mas)
+{
+    double temp;
+        for (int i = 0; i < size; i++)
+        {
+            if (mas[i] < mas[i + 1] )
+            {
+                temp = mas[i + 1][0];
+                mas[i + 1][0] = mas[i][0];
+                mas[i][0] = temp;
+            }
+        }
+   
+}
+
+void DeleteMatrix(double** matrix, int k) {
     for (int i = 0; i < size; i++) free(matrix[i]);
     free(matrix);
 }
