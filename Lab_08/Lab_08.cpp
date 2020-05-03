@@ -26,8 +26,7 @@ int main() {
             break;
         }
         case 2: {
-            matrix = ReadMatrixFromFile(); // доробити функцію читання матриці з файла
-            size = MAX;
+            matrix = ReadMatrixFromFile(); 
             break;
         }
         default: puts("wrong input");
@@ -58,24 +57,20 @@ double** CreateMatrix() {
     return m;
 }
 
-double** ReadMatrixFromFile()
-{
+double** ReadMatrixFromFile() {
+    size = MAX;
     FILE* file = fopen("D:\\matrix.txt", "r");
-
-    if (file == NULL)
-    {
-        printf("could not open\n");
-        return NULL;
-    }
-    
-    double** m = (double**)calloc(MAX, sizeof(double*));
-    for (int i = 0; i < 2; i++) {
-        if (m) {
-            *m = (double*)calloc(MAX + 1, sizeof(double));
-            for (int j = 0; j < MAX; j++) {
-                fscanf_s(file, "%lf", &m[i][j]);
+    double** m = (double**)calloc(size, sizeof(double*));
+    for (int i = 0; i < size; ++i) {
+        m[i] = (double*)calloc(size, sizeof(double));
+        for (int j = 0; j < size; ++j)
+        {
+            int readCount = fscanf(file, "%lf", &m[i][j]);
+            if (readCount != 1)
+            {
+                printf("Error reading file on element %d : %d!\n", i, j);
+                return 0;
             }
-            puts("\n");
         }
     }
     return m;
