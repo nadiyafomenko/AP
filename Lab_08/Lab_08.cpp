@@ -6,13 +6,12 @@ double** CreateMatrix();
 double** ReadMatrixFromFile();
 double** Transposition(double** matrix);
 
-void DeleteMatrix(double** matrix, int k);
 void Print(double* matrix[], int size);
 void DeleteRow(double** matrix, int size);
 
 double Sum(double* mas);
 
-int size = 0;       //розмір введеної матриці
+int size;       //розмір введеної матриці
 #define MAX 5    // розмір матриці з файлу
 
 int main() {
@@ -35,9 +34,7 @@ int main() {
     puts("\nTransported matrix:");
     double** transposed = Transposition(matrix);
     Print(transposed, size);
-    DeleteRow(transposed,size);
-    puts("\nMatrix with deleted max row:");
-    Print(transposed, size);
+    DeleteRow(transposed,size);  
 }
 
 double** CreateMatrix() {
@@ -86,8 +83,16 @@ void DeleteRow(double** matrix, int size) {
             max[1] = j;
         } 
     }
-    int index = max[1];
-    free(matrix[index]);        // виводить сміття на консоль
+    puts("\nMatrix with deleted max row:");
+    for (int i = 0; i < size; i++) {
+        if (i != max[1]) {
+            for (int j = 0; j < size; j++) {
+                printf("%lf\t", matrix[i][j]);
+            }
+        } else continue;
+   
+        printf("\n");
+    } 
 }
 
 double Sum(double* mas) {
@@ -96,11 +101,6 @@ double Sum(double* mas) {
         sum += mas[i];
     }
     return sum;
-}
-
-void DeleteMatrix(double** matrix, int k) {
-    for (int i = 0; i < k; i++) free(matrix[i]);
-    free(matrix);
 }
 
 void Print(double* matrix[], int size) {
