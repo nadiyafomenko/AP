@@ -3,18 +3,19 @@
 #include <stdlib.h>
 
 double** CreateMatrix();
-void DeleteMatrix(double** matrix, int k);
-void Print(double* matrix[]);
-double** Transposition(double** matrix);
 double** ReadMatrixFromFile();
-void DeleteRow(double** matrix);
-void bubbleSort(double** mas);
+double** Transposition(double** matrix);
 
-int size = 0;
-#define MAX 5
+void DeleteMatrix(double** matrix, int k);
+void Print(double* matrix[], int size);
+void DeleteRow(double** matrix, int size);
 
-int main()
-{
+double Sum(double* mas);
+
+int size = 0;       //розмір введеної матриці
+#define MAX 5    // розмір матриці з файлу
+
+int main() {
     int option = 0;
     double** matrix = { 0 };
     puts("Choose the option:\n1. Enter matrix from keyboard\n2. Read from file\n");
@@ -25,34 +26,29 @@ int main()
             break;
         }
         case 2: {
-            matrix = ReadMatrixFromFile();
+            matrix = ReadMatrixFromFile(); // доробити функцію читання матриці з файла
+            size = MAX;
             break;
         }
         default: puts("wrong input");
     }
-    Print(matrix);
-    puts("Transported matrix:\n");
-    double** transported = Transposition(matrix);
-    Print(transported);
-    DeleteRow(transported);
-    Print(transported);
-    DeleteMatrix(matrix,size);
+    Print(matrix, size);
+    puts("\nTransported matrix:");
+    double** transposed = Transposition(matrix);
+    Print(transposed, size);
+    DeleteRow(transposed,size);
+    puts("\nMatrix with deleted max row:");
+    Print(transposed, size);
 }
 
-double** CreateMatrix()
-{
+double** CreateMatrix() {
     double** m;
     puts("Enter matrix size:\t");
     scanf_s("%d", &size);
 
     m = (double**)calloc(size, sizeof(double*));
-    if (!m) return NULL;
     for (int i = 0; i < size; i++) {
         m[i] = (double*)calloc(size + 1, sizeof(double));
-        if (!*(m + i)) {
-            DeleteMatrix(m,i);
-            return NULL;
-        }
             for (int j = 0; j < size; j++)
             {
                 printf("a[%d][%d] = ", i, j);
@@ -72,10 +68,10 @@ double** ReadMatrixFromFile()
         return NULL;
     }
     
-    double** m = (double**)malloc(MAX*sizeof(double*));
+    double** m = (double**)calloc(MAX, sizeof(double*));
     for (int i = 0; i < 2; i++) {
         if (m) {
-            *m = (double*)malloc(MAX * sizeof(double));
+            *m = (double*)calloc(MAX + 1, sizeof(double));
             for (int j = 0; j < MAX; j++) {
                 fscanf_s(file, "%lf", &m[i][j]);
             }
@@ -85,46 +81,36 @@ double** ReadMatrixFromFile()
     return m;
 }
 
-void DeleteRow(double** matrix) {
-    double** sum = (double**)calloc(size,sizeof(double));
+void DeleteRow(double** matrix, int size) {
+    double max[2] = { 0 };
+    max[0] = Sum(matrix[0]);
+    max[1] = 0;
     for (int j = 0; j < size; j++) {
-        sum[j] = (double*)calloc(size, sizeof(double));
-        for (int i = 0; i < size; i++) {
-            sum[j][1] = j;
-            sum[j][0] += matrix[j][i];  
-        }
+        if (Sum(matrix[j]) > max[0]) {
+            max[0] = Sum(matrix[j]);
+            max[1] = j;
+        } 
     }
-    bubbleSort(sum);
-    const int k = sum[0][1];
-    free(matrix[k]);
+    int index = max[1];
+    free(matrix[index]);        // виводить сміття на консоль
 }
 
-void bubbleSort(double** mas)
-{
-    double temp;
-        for (int i = 0; i < size; i++)
-        {
-            if (mas[i] < mas[i + 1] )
-            {
-                temp = mas[i + 1][0];
-                mas[i + 1][0] = mas[i][0];
-                mas[i][0] = temp;
-            }
-        }
-   
+double Sum(double* mas) {
+    double sum = 0;
+    for (int i = 0; i < size; i++) {
+        sum += mas[i];
+    }
+    return sum;
 }
 
 void DeleteMatrix(double** matrix, int k) {
-    for (int i = 0; i < size; i++) free(matrix[i]);
+    for (int i = 0; i < k; i++) free(matrix[i]);
     free(matrix);
 }
 
-void Print(double* matrix[])
-{
-    for (int i = 0; i < size; i++) 
-    {
-        for (int j = 0; j < size; j++) 
-        {
+void Print(double* matrix[], int size) {
+    for (int i = 0; i < size; i++)  {
+        for (int j = 0; j < size; j++) {
             printf("%lf\t", matrix[i][j]); 
         }
         printf("\n");
@@ -132,9 +118,12 @@ void Print(double* matrix[])
 }
 
 double** Transposition(double** matrix) {
-    double** tmp = (double**)malloc(_MAX_PATH);
-    for (int i = 0; i < size; ++i) tmp[i] = (double*)malloc(_MAX_PATH);
-    for (int i = 0; i < size; ++i)
-        for (int j = 0; j < size; ++j) tmp[i][j] = matrix[j][i];
-    return tmp;
+    double** transposed = (double**)malloc(_MAX_PATH);
+    for (int i = 0; i < size; ++i) {
+        transposed[i] = (double*)malloc(_MAX_PATH);
+        for (int j = 0; j < size; ++j) {
+            transposed[i][j] = matrix[j][i];
+        }    
+    }
+    return transposed;
 }
