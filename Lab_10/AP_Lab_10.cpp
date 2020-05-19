@@ -22,17 +22,22 @@ int ReadNodesFromFile();
 void Print(NODE* root);
 int TreeHeight(NODE* proot);
 void treeBalanced(NODE* proot);
+void DeleteAllNodes();
+void DeleteLeaves();
 
 int main()
 {
     ReadNodesFromFile();
     Print(root);
-    puts("Chek tree balance: ");
-    printf("Tree height: %i\n", TreeHeight(root));
+
+    printf("\nTree height: %i\n", TreeHeight(root));
     if (TreeHeight(root->left) != TreeHeight(root->right))
         treeBalanced(root);
     else
         printf("Tree is balanced!\n");
+
+    DeleteAllNodes();
+    root = NULL;
 }
 
 NODE* CreateNode(INF* inform)
@@ -131,5 +136,46 @@ void treeBalanced(NODE* proot)
     else
     {
         return;
+    }
+}
+
+void DeleteAllNodes()
+{
+    NODE* node = root, * next;
+    NODE** stack;          
+    stack = (NODE**)calloc(TreeHeight(root), sizeof(NODE*));
+    int n = 0;                
+    while (node != NULL) {
+        if (node->left != NULL) {
+            next = node->left;
+            if (node->right != NULL)
+                stack[++n] = node->right;
+        }
+        else
+            if (node->right != NULL)
+                next = node->right;
+            else
+                next = stack[n--];
+        free(node);
+        node = next;
+    }
+    free(stack);
+    puts("\nTree Deleted\n");
+}
+
+void DeleteLeaves() {
+    NODE* node = root;
+    NODE* next; 
+    while (node != NULL) {
+        if (node->left != NULL) {
+            next = node->left;
+            if (node->right == NULL || node->left == NULL)
+                free(node);
+        }
+        else
+            if (node->right != NULL)
+                next = node->right;
+                if (node->right == NULL || node->left == NULL)
+                    free(node);
     }
 }
