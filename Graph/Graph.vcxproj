@@ -20,7 +20,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{7D84B5CC-1096-46D0-8114-99A8CF96300A}</ProjectGuid>
+    <ProjectGuid>{1A41DA9A-2F16-4E9F-B3F7-94ECD195DA03}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Graph</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
@@ -148,6 +148,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Graph.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="dijkstra.hpp" />
+    <ClInclude Include="graph.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,6 +1,7 @@
 ﻿#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define MAX 100
 
@@ -20,6 +21,7 @@ NODE* CreateNode(INF* inform);
 void AddNodeIter(NODE* pnew);
 int ReadNodesFromFile();
 void Print(NODE* root);
+void PrintInRange(NODE* root, int from, int to);
 int TreeHeight(NODE* proot);
 void treeBalanced(NODE* proot);
 void DeleteAllNodes();
@@ -35,6 +37,15 @@ int main()
         treeBalanced(root);
     else
         printf("Tree is balanced!\n");
+
+    int yearFrom = 0, yearTo = 0;
+
+    puts("Enter year range:\n");
+    puts("From:");
+    scanf_s("%d", &yearFrom);
+    puts("To:");
+    scanf_s("%d", &yearTo);
+    PrintInRange(root, yearFrom, yearTo);
 
     DeleteAllNodes();
     root = NULL;
@@ -62,7 +73,8 @@ int ReadNodesFromFile()
 
     while (fscanf(file,"%s %d", buf, &year) != EOF)
     {
-        inform.event = buf;
+        inform.event = (char*)malloc(MAX);
+        strcpy(inform.event, buf);
         inform.year = year;
         tempNode = CreateNode(&inform);
         AddNodeIter(tempNode);
@@ -107,8 +119,20 @@ void Print(NODE* root)
         return;
     Print(root->left);
     if (root->inf.year)
-        printf("Year: %d\n", root->inf.year);
+        printf("Year: %d\t Event: %s\n", root->inf.year, root->inf.event);
     Print(root->right);
+}
+
+void PrintInRange(NODE* root, int from, int to)
+{
+    if (root == NULL)
+        return;
+    PrintInRange(root->left, from, to);
+    if (root->inf.year > from && root->inf.year < to) {
+        printf("Year: %d\t Event: %s\n", root->inf.year, root->inf.event);
+    }
+            
+    PrintInRange(root->right, from, to);
 }
 
 int TreeHeight(NODE* proot)

@@ -16,7 +16,7 @@ typedef struct {
 } BiggestPathes;
 
 #include "graph.hpp"
-#include "dijkstra.hpp"
+//#include "dijkstra.hpp"
 
 int main() {
     Graph* graph = createGraph();
@@ -32,9 +32,9 @@ int main() {
     addEdge(graph, 4, 5, 10);
     addEdge(graph, 5, 6, 2);
 
-    printGraph(graph);
+    /*printGraph(graph);*/
     BiggestPathes* biggestPathes = (BiggestPathes*)malloc(sizeof(BiggestPathes));
-    dijkstra(biggestPathes, graph, 0);
+    //dijkstra(biggestPathes, graph, 0);
     //dijkstra(biggestPathes, graph, 1);
 
 }
