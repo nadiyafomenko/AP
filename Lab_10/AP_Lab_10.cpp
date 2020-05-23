@@ -25,7 +25,8 @@ void PrintInRange(NODE* root, int from, int to);
 int TreeHeight(NODE* proot);
 void treeBalanced(NODE* proot);
 void DeleteAllNodes();
-void DeleteLeaves();
+
+NODE* deleteLeaves(NODE* root);
 
 int main()
 {
@@ -37,7 +38,13 @@ int main()
         treeBalanced(root);
     else
         printf("Tree is balanced!\n");
+    puts("\n");
 
+   
+    deleteLeaves(root);  //видалення листків дерева
+    Print(root);
+
+    
     int yearFrom = 0, yearTo = 0;
 
     puts("Enter year range:\n");
@@ -45,7 +52,9 @@ int main()
     scanf_s("%d", &yearFrom);
     puts("To:");
     scanf_s("%d", &yearTo);
-    PrintInRange(root, yearFrom, yearTo);
+    
+    PrintInRange(root, yearFrom, yearTo); //роздрук дерева в заданому діапазоні
+
 
     DeleteAllNodes();
     root = NULL;
@@ -187,19 +196,16 @@ void DeleteAllNodes()
     puts("\nTree Deleted\n");
 }
 
-void DeleteLeaves() {
-    NODE* node = root;
-    NODE* next; 
-    while (node != NULL) {
-        if (node->left != NULL) {
-            next = node->left;
-            if (node->right == NULL || node->left == NULL)
-                free(node);
-        }
-        else
-            if (node->right != NULL)
-                next = node->right;
-                if (node->right == NULL || node->left == NULL)
-                    free(node);
+NODE* deleteLeaves(NODE* root)
+{
+    if (root == NULL)
+        return nullptr;
+    root->left = deleteLeaves(root->left);
+    root->right = deleteLeaves(root->right);
+
+    if (root->left == NULL && root->right == NULL) {
+
+        return NULL;
     }
+    return root;
 }
