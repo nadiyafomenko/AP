@@ -38,6 +38,7 @@ MinHeapNode* newMinHeapNode(int v, int dist) {
 }
 
 ListNode* dijkstra(Graph* graph, int src) {
+
     int dist[GRAPH_VERTEX];   
 
     MinHeap* minHeap = createMinHeap(GRAPH_VERTEX);
@@ -49,8 +50,6 @@ ListNode* dijkstra(Graph* graph, int src) {
         minHeap->pos[v] = v;
     }
 
-    minHeap->array[src] = newMinHeapNode(src, dist[src]);
-    minHeap->pos[src] = src;
     dist[src] = 0;
     decreaseKey(minHeap, src, dist[src]);
 
@@ -161,15 +160,12 @@ void minHeapify(MinHeap* minHeap, int idx) {
 
     if (smallest != idx)
     {
-        // The nodes to be swapped in min heap 
         MinHeapNode* smallestNode = minHeap->array[smallest];
         MinHeapNode* idxNode = minHeap->array[idx];
 
-        // Swap positions 
         minHeap->pos[smallestNode->v] = idx;
         minHeap->pos[idxNode->v] = smallest;
 
-        // Swap nodes 
         swapMinHeapNode(&minHeap->array[smallest], &minHeap->array[idx]);
 
         minHeapify(minHeap, smallest);
