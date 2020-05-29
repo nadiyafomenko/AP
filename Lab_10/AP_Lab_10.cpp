@@ -5,12 +5,12 @@
 
 #define MAX 100
 
-typedef struct inform {      	     /* структура інформаційного поля */
+typedef struct inform {      	        /* структура інформаційного поля */
     int year;
-    char* event;         	             /* вказівник на рядок повідомлення */
+    char* event;         	            /* вказівник на рядок повідомлення */
 } INF;
 
-typedef struct node {    	  /* структура двонаправленого елемента списку */
+typedef struct node {    	            /* структура двонаправленого елемента списку */
     INF inf;
     struct node* left, * right;
 } NODE;
@@ -22,8 +22,6 @@ void AddNodeIter(NODE* pnew);
 int ReadNodesFromFile();
 void Print(NODE* root);
 void PrintInRange(NODE* root, int from, int to);
-int TreeHeight(NODE* proot);
-void treeBalanced(NODE* proot);
 void DeleteAllNodes();
 
 NODE* deleteLeaves(NODE* root);
@@ -163,23 +161,6 @@ int TreeHeight(NODE* proot)
     lh = TreeHeight(proot->left);
     rh = TreeHeight(proot->right);
     return lh > rh ? lh + 1 : rh + 1;
-}
-
-void treeBalanced(NODE* proot)
-{
-    int rootdif = TreeHeight(proot->left) - TreeHeight(proot->right);
-    if (rootdif >= 1)
-    {
-        treeBalanced(proot->left);
-    }
-    else if (rootdif <= -1)
-    {
-        treeBalanced(proot->right);
-    }
-    else
-    {
-        return;
-    }
 }
 
 void DeleteAllNodes()
