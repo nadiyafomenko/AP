@@ -1,7 +1,0 @@
-﻿  Lab_09.cpp
-D:\university\Second\АП\AP\Lab_09\Lab_09.cpp(25,17): warning C4473: 'scanf_s' : not enough arguments passed for format string
-D:\university\Second\АП\AP\Lab_09\Lab_09.cpp(25,17): message : placeholders and their parameters expect 2 variadic arguments, but 1 were provided
-D:\university\Second\АП\AP\Lab_09\Lab_09.cpp(25,17): message : the missing variadic argument 2 is required by format string '%c'
-D:\university\Second\АП\AP\Lab_09\Lab_09.cpp(25,17): message : this argument is used as a buffer size
-D:\university\Second\АП\AP\Lab_09\functions.hpp(133): warning C4715: 'isSubstring': not all control paths return a value
-  Lab_09.vcxproj -> D:\university\Second\АП\AP\Lab_09\Debug\Lab_09.exe
