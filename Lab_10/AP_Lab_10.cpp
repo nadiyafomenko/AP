@@ -30,34 +30,29 @@ NODE* deleteLeaves(NODE* root);
 
 int main()
 {
-    ReadNodesFromFile();
+    if (ReadNodesFromFile() == 1 ) return 1;
     Print(root);
 
-    printf("\nTree height: %i\n", TreeHeight(root));
-    if (TreeHeight(root->left) != TreeHeight(root->right))
-        treeBalanced(root);
-    else
-        printf("Tree is balanced!\n");
-    puts("\n");
-
-   
-    deleteLeaves(root);  //видалення листків дерева
-    Print(root);
-
-    
     int yearFrom = 0, yearTo = 0;
 
-    puts("Enter year range:\n");
-    puts("From:");
+    puts("\nEnter year range:");
+    puts("\nFrom:");
     scanf_s("%d", &yearFrom);
     puts("To:");
     scanf_s("%d", &yearTo);
-    
-    PrintInRange(root, yearFrom, yearTo); //роздрук дерева в заданому діапазоні
+    puts("\nTree in your range:\n");
+    PrintInRange(root, yearFrom, yearTo);           //роздрук дерева в заданому діапазоні
+
+
+    puts("\nTree after deleting leaves:\n");
+    deleteLeaves(root);                             //видалення листків дерева
+    Print(root);
 
 
     DeleteAllNodes();
     root = NULL;
+
+    return 0;
 }
 
 NODE* CreateNode(INF* inform)
@@ -78,7 +73,24 @@ int ReadNodesFromFile()
     int year = 0;
 
     tempNode = (NODE*)malloc(sizeof(NODE));
-    file = fopen("TreeData.txt", "r");
+
+    int option = 0;
+    puts("Change file:\n1.TreeData_first.txt\n2.TreeData_second.txt");
+    scanf_s("%d", &option);
+    switch (option) {
+    case 1: {
+        file = fopen("TreeData_first.txt", "r");
+        break;
+    }
+    case 2: {
+        file = fopen("TreeData_second.txt", "r");
+        break;
+    }
+    default: {
+        puts("No such option");
+        return 1; 
+    }
+    }
 
     while (fscanf(file,"%s %d", buf, &year) != EOF)
     {
@@ -158,12 +170,10 @@ void treeBalanced(NODE* proot)
     int rootdif = TreeHeight(proot->left) - TreeHeight(proot->right);
     if (rootdif >= 1)
     {
-        printf("Node [%i] is not balanced!\n", proot->inf.year);
         treeBalanced(proot->left);
     }
     else if (rootdif <= -1)
     {
-        printf("Node [%i] is not balanced!\n", proot->inf.year);
         treeBalanced(proot->right);
     }
     else
