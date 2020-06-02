@@ -13,32 +13,34 @@ typedef struct {
 
 city c;
 
-int Input(); // функція заповнення масиву структур 
-int Percent(); //розрахування відсотку
+int Input(city* cities); // функція заповнення масиву структур 
+int Percent(city* , int counter); //розрахування відсотку
 city setCity(); //функція заповнення структури
-void printCity(); //функція роздруку таблиці
-void bubbleSort(); // функція сортування методом бульбашки
-void InsertionSort(); // функція сортування методом вставок
+void printCity(city* cities, int counter); //функція роздруку таблиці
+void bubbleSort(city* cities, int counter); // функція сортування методом бульбашки
+void InsertionSort(city* cities, int counter); // функція сортування методом вставок
 
-city cities[LEN];
-int counter;
 
 int main() {
+
+	city cities[LEN];
+	int counter;
+
 	puts("Press enter no start:");
-	counter = Input();
+	counter = Input(cities);
 
-	printCity();	//Original table
+	printCity(cities, counter);	//Original table
 
-	InsertionSort();	//Sorting
-	printCity(); //Sorted table
+	InsertionSort(cities, counter);	//Sorting
+	printCity(cities, counter); //Sorted table
 
-	printf("There are %d%% of cities built over 1200 years ago", Percent()); //percents	
+	printf("There are %d%% of cities built over 1200 years ago", Percent(cities, counter)); //percents	
 }
 
 
 //ФУНКЦІЇ
 
-int Input() {
+int Input(city* cities) {
 	int q = 0;
 	int counter = 0;
 	do {
@@ -51,7 +53,7 @@ int Input() {
 	return counter;
 }
 
-int Percent() {
+int Percent(city* cities, int counter) {
 	int percent = 0;
 	for (int i = 0; i < counter; i++) {
 		if ((2020 - cities[i].year) > 1200) {
@@ -77,7 +79,7 @@ city setCity() {
 	return c;
 }
 
-void printCity() {
+void printCity(city* cities, int counter) {
 	puts("\n\n\tTable:\n");
 	for (int i = 0; i < counter; i++) {
 		printf("%s\t%s\t%d\t%d\n", cities[i].country, cities[i].name, cities[i].year, cities[i].population);
@@ -86,7 +88,7 @@ void printCity() {
 }
 
 
-void bubbleSort()
+void bubbleSort(city* cities, int counter)
 {
 	city c;
 	for (int j = counter; j > 0; j--)
@@ -103,7 +105,7 @@ void bubbleSort()
 	}
 }
 
-void InsertionSort()
+void InsertionSort(city* cities, int counter)
 {
 	int location;
 	city c;
