@@ -21,6 +21,13 @@ int main()
 	Print(numbs);
 }
 
+int max(int* numbs) {
+	int max = numbs[0];
+	for (int i = 0; i < KST; i++) {
+		if (numbs[i] > max) max = numbs[i];
+	}
+	return max;
+}
 
 void Print(int (*numbs)[LEN]) {
 	for (int r = 0; r < KST; r++) {
@@ -34,7 +41,7 @@ void Print(int (*numbs)[LEN]) {
 }
 
 void getNumbs(char* string, int* row) {
-	int* p_row = row+1;
+	int* p_row = row + 1;
 	long num;
 	while (*string) {
 		while (*string && (*string < '0' || *string > '9'))
