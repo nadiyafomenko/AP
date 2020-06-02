@@ -3,34 +3,52 @@
 
 #define LEN 100
 
-int findwords(char* s, char* mas[LEN]);
-void Print(char* mas[LEN], int k);
-
+int findwords(char*);
+void findwords_iter(char* s);
 
 int main() {
-	char* mas[LEN];
 	char s[LEN];
 	gets_s(s, LEN);
-	int count = findwords(s,mas);
-	Print(mas, count);
+	findwords_iter(s);
 }
 
-int findwords(char* s, char* mas[LEN]) {
-	if (!*(s+1)) return 0;
+//recursion
+int findwords(char* s) {
+	if (!*s) return 0;
 	char* p = s;
 	while (*s && *s != ' ') s++;
 	*s = 0;
 
-	int count = findwords(s + 1,mas);
+	int count = findwords(s + 1);
 	if (*p == *(s - 1)) {
-		mas[count] = p;
+		puts(p);
 		count++;
 	}
 	return count;
 }
 
-void Print(char* mas[LEN], int k) {
-	for (int i = 0; i < k; i++) {
-		puts(mas[i]);
+//iter
+void findwords_iter(char* s) {
+	char* p = s, * _p = s;
+	int k = 0;
+
+	while (*++s) {
+		if (*s == ' ') {
+			k++;
+			_p = s - 1;
+			if (*p == *_p)
+				for (p; *(p) != ' '; ++p)
+					printf("%c", *p);
+
+			p = s + 1;
+		}
 	}
+	if (*(s - 1) == *p)
+		for (p; *(p) != '\0'; ++p)
+			printf("%c", *p);
+	if (k == 0)
+		if (p == _p) {
+			for (p; *(p) != '\0'; ++p) printf("%c", *p);
+		}
 }
+
