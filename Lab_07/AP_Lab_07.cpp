@@ -7,16 +7,16 @@
 #define LEN 20
 
 void ToBinary(FILE* file, long n);
-int validation(long* mas, int numb, long* validMas);
-void TextFileWrite(FILE* file, long* validMas, int count);
-void BinaryFileWrite(FILE* file, long* mas);
+int validation(unsigned long* mas, int numb, unsigned long* validMas);
+void TextFileWrite(FILE* file, unsigned long* validMas, int count);
+void BinaryFileWrite(FILE* file, unsigned long* mas);
 
 
 int main() {
-     FILE*ftxt, *fbin;
+     FILE *ftxt, *fbin;
      int numb = 0;
-     long mas[MAX] = { 0 };
-     long ValidatedMas[MAX] = { 0 };
+     unsigned long mas[MAX] = { 0 };
+     unsigned long ValidatedMas[MAX] = { 0 };
 
      printf("enter a control number:\n");
      scanf_s("%d",&numb);
@@ -33,26 +33,25 @@ int main() {
 }
 
 
-void BinaryFileWrite(FILE* file, long* mas) {
+void BinaryFileWrite(FILE* file, unsigned long* mas) {
     srand(time(0));
     for (int i = 0; i < MAX; i++) {
         mas[i] = (rand() << 32) + rand();
         ToBinary(file,mas[i]);
-        printf("%d\n", mas[i]);
-       /* printf("%d\n", mas[i]);*/
+        printf("%ld\n", mas[i]);
     }
 }
 
 
-void TextFileWrite(FILE* file, long* validMas, int count) {
+void TextFileWrite(FILE* file, unsigned long* validMas, int count) {
     for (int i = 0; i < count; i++) {
         fprintf(file, "%ld\n", validMas[i]);
     }
     fclose(file);
 }
 
-
-int validation(long* mas, int numb, long* validMas) {
+//методом ділення
+int validation(unsigned long* mas, int numb, unsigned long* validMas) {
     int count = 0;
         for (int i = 0; i < MAX; i++) {
             char str[LEN];
