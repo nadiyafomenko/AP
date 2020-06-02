@@ -7,16 +7,20 @@ double** ReadMatrixFromFile();
 double** Transposition(double** matrix);
 
 void Print(double* matrix[], int size);
-void DeleteRow(double** matrix, int size);
+int DeleteRow(double** matrix, int size);
 
 double Sum(double* mas);
+
+void DeleteMatrix(double** matrix, int);
 
 int size;       //розмір введеної матриці
 #define MAX 5    // розмір матриці з файлу
 
 int main() {
+
     int option = 0;
     double** matrix = { 0 };
+
     puts("Choose the option:\n1. Enter matrix from keyboard\n2. Read from file\n");
     scanf_s("%d", &option);
     switch(option) {
@@ -34,7 +38,12 @@ int main() {
     puts("\nTransported matrix:");
     double** transposed = Transposition(matrix);
     Print(transposed, size);
-    DeleteRow(transposed,size);  
+    int size_tr = DeleteRow(transposed, size); 
+    puts("\n");
+    Print(transposed, size_tr);
+    DeleteMatrix(transposed, size_tr);
+
+    DeleteMatrix(matrix, size);
 }
 
 double** CreateMatrix() {
@@ -73,7 +82,7 @@ double** ReadMatrixFromFile() {
     return m;
 }
 
-void DeleteRow(double** matrix, int size) {
+int DeleteRow(double** matrix, int size) {
     double max[2] = { 0 };
     max[0] = Sum(matrix[0]);
     max[1] = 0;
@@ -81,18 +90,24 @@ void DeleteRow(double** matrix, int size) {
         if (Sum(matrix[j]) > max[0]) {
             max[0] = Sum(matrix[j]);
             max[1] = j;
-        } 
+        }
     }
-    puts("\nMatrix with deleted max row:");
-    for (int i = 0; i < size; i++) {
-        if (i != max[1]) {
-            for (int j = 0; j < size; j++) {
-                printf("%lf\t", matrix[i][j]);
-            }
-        } else continue;
+    free(*(matrix + (int)max[1]));
+    for (int i = max[1]; i < size - 1; i++) {
+        matrix[i] = matrix[i + 1];
+    }
+
+    return size - 1;
+    //puts("\nMatrix with deleted max row:");
+    //for (int i = 0; i < size; i++) {
+    //    if (i != max[1]) {
+    //        for (int j = 0; j < size; j++) {
+    //            printf("%lf\t", matrix[i][j]);
+    //        }
+    //    } else continue;
    
-        printf("\n");
-    } 
+    //    printf("\n");
+    //} 
 }
 
 double Sum(double* mas) {
@@ -101,6 +116,14 @@ double Sum(double* mas) {
         sum += mas[i];
     }
     return sum;
+}
+
+void DeleteMatrix(double** matrix, int size)
+{
+    for (int i = 0; i < size; i++) {
+        free(matrix[i]);
+    }
+    free(matrix);
 }
 
 void Print(double* matrix[], int size) {
